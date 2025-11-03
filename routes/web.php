@@ -4,11 +4,15 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Public\HomeController;
 
 // Halaman awal (publik)
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/profil', [HomeController::class, 'profil'])->name('profil');
+Route::get('/donasi', [HomeController::class, 'donasi'])->name('donasi');
+Route::get('/berita', [HomeController::class, 'berita'])->name('berita');
+Route::get('/acara', [HomeController::class, 'acara'])->name('acara');
 
 // ROUTE UNTUK ADMIN
 Route::middleware(['auth', 'role:admin'])
