@@ -71,19 +71,19 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-3 mb-3">
-                            <a href="{{ route('admin.berita.create') }}" class="btn btn-primary w-100">
+                            {{-- <a href="{{ route('admin.berita.create') }}" class="btn btn-primary w-100"> --}}
                                 <i class="fas fa-plus me-2"></i>Tambah Berita
-                            </a>
+                            {{-- </a> --}}
                         </div>
                         <div class="col-md-3 mb-3">
-                            <a href="{{ route('admin.acara.create') }}" class="btn btn-success w-100">
+                            {{-- <a href="{{ route('admin.acara.create') }}" class="btn btn-success w-100"> --}}
                                 <i class="fas fa-plus me-2"></i>Tambah Acara
-                            </a>
+                            {{-- </a> --}}
                         </div>
                         <div class="col-md-3 mb-3">
-                            <a href="{{ route('admin.donasi.create') }}" class="btn btn-info w-100">
+                            {{-- <a href="{{ route('admin.donasi.create') }}" class="btn btn-info w-100"> --}}
                                 <i class="fas fa-plus me-2"></i>Catat Donasi
-                            </a>
+                            {{-- </a> --}}
                         </div>
                     </div>
                 </div>

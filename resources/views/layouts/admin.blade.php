@@ -42,26 +42,26 @@
                     
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link {{ Request::is('admin/dashboard') ? 'active' : '' }}" 
-                               href="{{ route('admin.dashboard') }}">
+                            {{-- <a class="nav-link {{ Request::is('admin/dashboard') ? 'active' : '' }}" 
+                               href="{{ route('admin.dashboard') }}"> --}}
                                 <i class="fas fa-tachometer-alt me-2"></i> Dashboard
-                            </a>
+                            {{-- </a> --}}
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ Request::is('admin/berita*') ? 'active' : '' }}" 
-                               href="{{ route('admin.berita.index') }}">
+                            {{-- <a class="nav-link {{ Request::is('admin/berita*') ? 'active' : '' }}" 
+                               href="{{ route('admin.berita.index') }}"> --}}
                                 <i class="fas fa-newspaper me-2"></i> Berita
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ Request::is('admin/acara*') ? 'active' : '' }}" 
-                               href="{{ route('admin.acara.index') }}">
+                            {{-- <a class="nav-link {{ Request::is('admin/acara*') ? 'active' : '' }}" 
+                               href="{{ route('admin.acara.index') }}"> --}}
                                 <i class="fas fa-calendar-alt me-2"></i> Acara
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ Request::is('admin/donasi*') ? 'active' : '' }}" 
-                               href="{{ route('admin.donasi.index') }}">
+                            {{-- <a class="nav-link {{ Request::is('admin/donasi*') ? 'active' : '' }}" 
+                               href="{{ route('admin.donasi.index') }}"> --}}
                                 <i class="fas fa-donate me-2"></i> Donasi
                             </a>
                         </li>
