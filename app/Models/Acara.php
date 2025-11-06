@@ -10,7 +10,6 @@ class Acara extends Model
 {
     use HasFactory;
 
-    // ✅ TAMBAH INI
     protected $table = 'acara';
 
     protected $fillable = [

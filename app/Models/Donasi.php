@@ -10,7 +10,6 @@ class Donasi extends Model
 {
     use HasFactory;
 
-    // ✅ TAMBAH INI
     protected $table = 'donasi';
 
     protected $fillable = [
