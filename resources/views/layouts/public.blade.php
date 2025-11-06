@@ -48,11 +48,12 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('berita') ? 'active' : '' }}" 
-                           href="{{ route('berita') }}">Berita</a>
+                           href="{{ route('public.berita') }}">Berita</a>
+                           
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('acara') ? 'active' : '' }}" 
-                           href="{{ route('acara') }}">Acara</a>
+                           href="{{ route('public.acara') }}">Acara</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('donasi') ? 'active' : '' }}" 
