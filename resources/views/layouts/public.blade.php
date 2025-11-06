@@ -44,15 +44,19 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('profil') ? 'active' : '' }}" 
-                           href="{{ route('profil') }}">Profil</a>
+                           {{-- href="{{ route('profil') }}" --}}
+                           >Profil</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('berita') ? 'active' : '' }}" 
-                           href="{{ route('berita') }}">Berita</a>
+                           {{-- href="{{ route('berita') }}" --}}
+                           >Berita
+                        </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('acara') ? 'active' : '' }}" 
-                           href="{{ route('acara') }}">Acara</a>
+                           {{-- href="{{ route('acara') }}" --}}
+                           >Acara</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('donasi') ? 'active' : '' }}" 
