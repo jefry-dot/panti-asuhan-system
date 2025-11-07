@@ -88,7 +88,7 @@
             </div>
             <hr>
             <div class="text-center">
-                <p>&copy; 2024 Panti Asuhan Bahagia. All rights reserved.</p>
+                <p>&copy; 2024 Panti Asuhan Alza EL Rohmah. All rights reserved.</p>
             </div>
         </div>
     </footer>
