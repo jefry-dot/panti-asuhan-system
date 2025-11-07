@@ -44,7 +44,8 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('profil') ? 'active' : '' }}" 
-                           href="{{ route('profil') }}">Profil</a>
+                           {{-- href="{{ route('profil') }}" --}}
+                           >Profil</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('berita') ? 'active' : '' }}" 
