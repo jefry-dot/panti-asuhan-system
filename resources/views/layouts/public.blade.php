@@ -49,14 +49,12 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('berita') ? 'active' : '' }}" 
-                           {{-- href="{{ route('berita') }}" --}}
-                           >Berita
-                        </a>
+                           href="{{ route('public.berita') }}">Berita</a>
+                           
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('acara') ? 'active' : '' }}" 
-                           {{-- href="{{ route('acara') }}" --}}
-                           >Acara</a>
+                           href="{{ route('public.acara') }}">Acara</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('donasi') ? 'active' : '' }}" 
@@ -91,7 +89,7 @@
             </div>
             <hr>
             <div class="text-center">
-                <p>&copy; 2024 Panti Asuhan Bahagia. All rights reserved.</p>
+                <p>&copy; 2024 Panti Asuhan Alza EL Rohmah. All rights reserved.</p>
             </div>
         </div>
     </footer>
