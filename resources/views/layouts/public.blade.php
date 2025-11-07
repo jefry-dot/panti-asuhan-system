@@ -6,28 +6,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title') - Panti Asuhan Bahagia</title>
 
-    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
+        /* Menggunakan skema warna HIJAU */
+        :root {
+            --primary-green: #22c55e;
+            --secondary-green: #16a34a;
+        }
+
+        /* Mengganti gradien ungu dengan gradien hijau konsisten */
         .hero-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
             color: white;
             padding: 100px 0;
         }
 
+        /* Mengganti warna navbar brand menjadi hijau */
         .navbar-brand {
             font-weight: bold;
-            color: #667eea !important;
+            color: var(--primary-green) !important;
+        }
+
+        /* Styling tambahan untuk link aktif */
+        .navbar-nav .nav-item .nav-link.active {
+            color: var(--secondary-green) !important;
+            font-weight: 600;
+            border-bottom: 3px solid var(--primary-green);
         }
     </style>
+
+    @yield('styles')
 </head>
 
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
         <div class="container">
             <a class="navbar-brand" href="{{ url('/') }}">
                 <i class="fas fa-hands-helping me-2"></i>
@@ -40,25 +54,27 @@
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
+                    {{-- Navigasi menggunakan Route Name --}}
                     <li class="nav-item">
-                        <a class="nav-link {{ Request::is('/') ? 'active' : '' }}" href="{{ url('/') }}">Home</a>
+                        <a class="nav-link {{ Request::is('/') ? 'active' : '' }}"
+                            href="{{ route('public.home') }}">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('profil') ? 'active' : '' }}"
-                            href="{{ route('profil') }}">Profil</a>
+                            href="{{ route('public.profil') }}">Profil</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('berita') ? 'active' : '' }}"
                             href="{{ route('public.berita') }}">Berita</a>
-
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('acara') ? 'active' : '' }}"
                             href="{{ route('public.acara') }}">Acara</a>
                     </li>
                     <li class="nav-item">
+                        {{-- Menggunakan route name yang benar 'public.donasi' --}}
                         <a class="nav-link {{ Request::is('donasi') ? 'active' : '' }}"
-                            href="{{ route('donasi') }}">Donasi</a>
+                            href="{{ route('public.donasi') }}">Donasi</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('login') ? 'active' : '' }}" href="{{ route('login') }}">Login
@@ -69,12 +85,10 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
     <main>
         @yield('content')
     </main>
 
-    <!-- Footer -->
     <footer class="bg-dark text-white py-4 mt-5">
         <div class="container">
             <div class="row">
@@ -89,16 +103,15 @@
             </div>
             <hr>
             <div class="text-center">
-                <p>&copy; 2024 Panti Asuhan Alza EL Rohmah. All rights reserved.</p>
+                <p>&copy; 2024 Panti Asuhan Bahagia. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Custom Scripts -->
-    @stack('scripts')
+    {{-- Mengganti @stack('scripts') menjadi @yield('scripts') untuk konsistensi dengan Blade --}}
+    @yield('scripts')
 </body>
 
 </html>
