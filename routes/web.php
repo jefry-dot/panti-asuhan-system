@@ -17,11 +17,6 @@ use App\Http\Controllers\Public\AcaraController as PublicAcaraController;
 
 
 
-// ==================== ROUTE PUBLIK ====================
-Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/profil', [HomeController::class, 'profil'])->name('profil');
-Route::get('/donasi', [DonationController::class, 'index'])->name('donation.index');
-Route::post('/donasi', [DonationController::class, 'store'])->name('donation.store');
 
 
 
