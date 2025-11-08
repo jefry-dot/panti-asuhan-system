@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Public;
 
+use App\Http\Controllers\Controller;
 use App\Models\Acara;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -34,7 +35,6 @@ class AcaraController extends Controller
             'kuota_peserta' => 'nullable|integer|min:1',
         ]);
 
-        // Upload poster
         if ($request->hasFile('poster')) {
             $poster = $request->file('poster');
             $posterName = time() . '_' . Str::slug($request->nama_acara) . '.' . $poster->getClientOriginalExtension();
@@ -45,8 +45,7 @@ class AcaraController extends Controller
         $validated['slug'] = Str::slug($request->nama_acara);
         Acara::create($validated);
 
-        return redirect()->route('admin.acara.index')
-            ->with('success', 'Acara berhasil ditambahkan!');
+        return redirect()->route('admin.acara.index')->with('success', 'Acara berhasil ditambahkan!');
     }
 
     public function show(Acara $acara)
@@ -73,7 +72,6 @@ class AcaraController extends Controller
             'kuota_peserta' => 'nullable|integer|min:1',
         ]);
 
-        // Upload poster baru jika ada
         if ($request->hasFile('poster')) {
             if ($acara->poster && Storage::disk('public')->exists($acara->poster)) {
                 Storage::disk('public')->delete($acara->poster);
@@ -88,8 +86,7 @@ class AcaraController extends Controller
         $validated['slug'] = Str::slug($request->nama_acara);
         $acara->update($validated);
 
-        return redirect()->route('admin.acara.index')
-            ->with('success', 'Acara berhasil diperbarui!');
+        return redirect()->route('admin.acara.index')->with('success', 'Acara berhasil diperbarui!');
     }
 
     public function destroy(Acara $acara)
@@ -100,16 +97,16 @@ class AcaraController extends Controller
 
         $acara->delete();
 
-        return redirect()->route('admin.acara.index')
-            ->with('success', 'Acara berhasil dihapus!');
+        return redirect()->route('admin.acara.index')->with('success', 'Acara berhasil dihapus!');
     }
 
+    // Halaman publik
     public function publicIndex()
     {
         $acara = Acara::where('tanggal_selesai', '>=', now())
             ->orderBy('tanggal_mulai')
             ->paginate(6);
-            
+
         return view('public.acara', compact('acara'));
     }
 }

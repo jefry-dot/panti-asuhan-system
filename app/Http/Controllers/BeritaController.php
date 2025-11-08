@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Public;
 
+use App\Http\Controllers\Controller;
 use App\Models\Berita;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -30,7 +31,6 @@ class BeritaController extends Controller
             'tanggal_publikasi' => 'required|date',
         ]);
 
-        // Upload gambar
         if ($request->hasFile('gambar')) {
             $gambar = $request->file('gambar');
             $gambarName = time() . '_' . Str::slug($request->judul) . '.' . $gambar->getClientOriginalExtension();
@@ -39,11 +39,9 @@ class BeritaController extends Controller
         }
 
         $validated['slug'] = Str::slug($request->judul);
-
         Berita::create($validated);
 
-        return redirect()->route('admin.berita.index')
-            ->with('success', 'Berita berhasil ditambahkan!');
+        return redirect()->route('admin.berita.index')->with('success', 'Berita berhasil ditambahkan!');
     }
 
     public function show(Berita $berita)
@@ -66,9 +64,7 @@ class BeritaController extends Controller
             'tanggal_publikasi' => 'required|date',
         ]);
 
-        // Upload gambar baru jika ada
         if ($request->hasFile('gambar')) {
-            // Hapus gambar lama
             if ($berita->gambar && Storage::disk('public')->exists($berita->gambar)) {
                 Storage::disk('public')->delete($berita->gambar);
             }
@@ -82,8 +78,7 @@ class BeritaController extends Controller
         $validated['slug'] = Str::slug($request->judul);
         $berita->update($validated);
 
-        return redirect()->route('admin.berita.index')
-            ->with('success', 'Berita berhasil diperbarui!');
+        return redirect()->route('admin.berita.index')->with('success', 'Berita berhasil diperbarui!');
     }
 
     public function destroy(Berita $berita)
@@ -94,16 +89,16 @@ class BeritaController extends Controller
 
         $berita->delete();
 
-        return redirect()->route('admin.berita.index')
-            ->with('success', 'Berita berhasil dihapus!');
+        return redirect()->route('admin.berita.index')->with('success', 'Berita berhasil dihapus!');
     }
 
+    // Halaman publik
     public function publicIndex()
     {
         $berita = Berita::where('tanggal_publikasi', '<=', now())
             ->latest()
             ->paginate(6);
-            
+
         return view('public.berita', compact('berita'));
     }
 }
