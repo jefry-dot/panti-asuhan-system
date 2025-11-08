@@ -10,11 +10,13 @@ use App\Http\Controllers\AcaraController;
 use App\Http\Controllers\Admin\BeritaController as AdminBeritaController;
 use App\Http\Controllers\Admin\AcaraController as AdminAcaraController;
 use App\Http\Controllers\Admin\DonasiController as AdminDonasiController;
+use App\Http\Controllers\DonationController;
 
 // ==================== ROUTE PUBLIK ====================
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/profil', [HomeController::class, 'profil'])->name('profil');
-Route::get('/donasi', [HomeController::class, 'donasi'])->name('donasi');
+Route::get('/donasi', [DonationController::class, 'index'])->name('donation.index');
+Route::post('/donasi', [DonationController::class, 'store'])->name('donation.store');
 
 // Berita Publik
 Route::get('/berita', [BeritaController::class, 'publicIndex'])->name('public.berita');

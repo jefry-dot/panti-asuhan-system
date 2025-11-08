@@ -21,12 +21,7 @@ class HomeController extends Controller
         ]);
     }
 
-    public function donasi()
-    {
-        return view('public.donasi', [
-            'title' => 'Donasi - Panti Asuhan Bahagia'
-        ]);
-    }
+    
 
     public function berita()
     {
