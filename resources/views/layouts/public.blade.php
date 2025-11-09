@@ -74,7 +74,7 @@
                     <li class="nav-item">
                         {{-- Menggunakan route name yang benar 'public.donasi' --}}
                         <a class="nav-link {{ Request::is('donasi') ? 'active' : '' }}"
-                            href="{{ route('public.donasi') }}">Donasi</a>
+                            href="{{ route('donation.form') }}">Donasi</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('login') ? 'active' : '' }}" href="{{ route('login') }}">Login
