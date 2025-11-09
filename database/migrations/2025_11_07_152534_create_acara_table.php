@@ -4,31 +4,24 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
-    /**
-     * Run the migrations.
-     */
+return new class extends Migration
+{
     public function up(): void
     {
         Schema::create('acara', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_acara');
+            $table->string('judul');
             $table->string('slug')->unique();
             $table->text('deskripsi');
-            $table->string('poster')->nullable();
+            $table->date('tanggal');
+            $table->time('waktu_mulai')->nullable(false);
+            $table->time('waktu_selesai')->nullable(false);
             $table->string('lokasi');
-            $table->date('tanggal_mulai');
-            $table->date('tanggal_selesai');
-            $table->time('waktu_mulai');
-            $table->time('waktu_selesai');
-            $table->integer('kuota_peserta')->nullable();
+            $table->string('gambar')->nullable();
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('acara');

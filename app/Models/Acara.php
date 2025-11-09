@@ -13,8 +13,17 @@ class Acara extends Model
     protected $table = 'acara';
 
     protected $fillable = [
-        'user_id', 'nama_acara', 'slug', 'deskripsi', 'poster', 
-        'tanggal_mulai', 'tanggal_selesai', 'lokasi', 'status'
+        'judul',
+        'slug',
+        'deskripsi',
+        'tanggal',
+        'waktu_mulai',
+        'waktu_selesai',
+        'lokasi',
+        'gambar',
+    ];
+    protected $casts = [
+        'tanggal' => 'date',
     ];
 
     public function user(): BelongsTo
