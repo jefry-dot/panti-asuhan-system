@@ -21,12 +21,13 @@ use App\Http\Controllers\Public\AcaraController as PublicAcaraController;
 
 
 // ==================== ROUTE PUBLIK ==================== //
+
 Route::prefix('/')
     ->name('public.')
     ->group(function () {
+        // Halaman utama & profil
         Route::get('/', [HomeController::class, 'index'])->name('home');
         Route::get('/profil', [HomeController::class, 'profil'])->name('profil');
-        Route::get('/donasi', [HomeController::class, 'donasi'])->name('donasi');
 
         // Halaman berita publik
         Route::get('/berita', [PublicBeritaController::class, 'index'])->name('berita');
@@ -35,8 +36,16 @@ Route::prefix('/')
         // Halaman acara publik
         Route::get('/acara', [PublicAcaraController::class, 'index'])->name('acara');
         Route::get('/acara/{acara:slug}', [PublicAcaraController::class, 'show'])->name('acara.show');
+
+        // ✅ Halaman donasi publik
+       
     });
 
+    Route::controller(DonationController::class)->group(function () {
+    Route::get('/donasi', 'index')->name('donation.form');
+    Route::post('/donasi', 'store')->name('donation.store');
+    Route::post('/midtrans/callback', 'callback')->name('midtrans.callback');
+});
 
 // ==================== ROUTE ADMIN ==================== //
 Route::middleware(['auth', 'role:admin'])

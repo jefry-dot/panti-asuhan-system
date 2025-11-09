@@ -2,37 +2,20 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Donation extends Model
 {
-    protected $guarded = [];
+    use HasFactory;
 
-    public function setStatusPending()
-{
-    $this->attributes['status'] = 'pending';
-    self::save();
-}
-public function setStatusSuccess()
-{
-    $this->attributes['status'] = 'success';
-    self::save();
-}
-public function setStatusFailed()
-{
-    $this->attributes['status'] = 'failed';
-    self::save();
-}
-
-/**
- * Set status to Expired
- *
- * @return void
- */
-public function setStatusExpired()
-{
-    $this->attributes['status'] = 'expired';
-    self::save();
-}
-
+    protected $fillable = [
+        'donor_name',
+        'donor_email',
+        'donation_type',
+        'amount',
+        'note',
+        'status',
+        'snap_token'
+    ];
 }
