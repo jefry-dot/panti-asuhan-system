@@ -25,20 +25,18 @@ class BeritaController extends Controller
     {
         $validated = $request->validate([
             'judul' => 'required|string|max:255',
+            'slug' => 'nullable|string|max:255|unique:beritas,slug',
             'konten' => 'required|string',
-            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'penulis' => 'required|string|max:100',
             'tanggal_publikasi' => 'required|date',
         ]);
 
-        if ($request->hasFile('gambar')) {
-            $gambar = $request->file('gambar');
-            $namaGambar = time().'_'.Str::slug($request->judul).'.'.$gambar->getClientOriginalExtension();
-            $path = $gambar->storeAs('berita', $namaGambar, 'public');
-            $validated['gambar'] = $path;
-        }
+        $validated['slug'] = $validated['slug'] ?? Str::slug($validated['judul']);
 
-        $validated['slug'] = Str::slug($request->judul);
+        if ($request->hasFile('gambar')) {
+            $validated['gambar'] = $request->file('gambar')->store('uploads/berita', 'public');
+        }
 
         Berita::create($validated);
 
@@ -55,32 +53,31 @@ class BeritaController extends Controller
         return view('admin.berita.edit', compact('berita'));
     }
 
-    public function update(Request $request, Berita $berita)
+    public function update(Request $request, $id)
     {
+        $berita = Berita::findOrFail($id);
+
         $validated = $request->validate([
             'judul' => 'required|string|max:255',
             'konten' => 'required|string',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'penulis' => 'required|string|max:100',
+            'penulis' => 'required|string|max:255',
             'tanggal_publikasi' => 'required|date',
+            'gambar' => 'nullable|image|max:2048',
         ]);
 
         if ($request->hasFile('gambar')) {
-            if ($berita->gambar && Storage::disk('public')->exists($berita->gambar)) {
-                Storage::disk('public')->delete($berita->gambar);
+            if ($berita->gambar) {
+                Storage::delete('public/' . $berita->gambar);
             }
-
-            $gambar = $request->file('gambar');
-            $namaGambar = time().'_'.Str::slug($request->judul).'.'.$gambar->getClientOriginalExtension();
-            $path = $gambar->storeAs('berita', $namaGambar, 'public');
-            $validated['gambar'] = $path;
+            $validated['gambar'] = $request->file('gambar')->store('berita', 'public');
         }
 
-        $validated['slug'] = Str::slug($request->judul);
+        $validated['slug'] = Str::slug($validated['judul']);
         $berita->update($validated);
 
-        return redirect()->route('admin.berita.index')->with('success', 'Berita berhasil diperbarui!');
+        return redirect()->route('admin.berita.index')->with('success', 'Berita berhasil diperbarui.');
     }
+
 
     public function destroy(Berita $berita)
     {

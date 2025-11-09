@@ -24,28 +24,33 @@ class AcaraController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nama_acara' => 'required|string|max:255',
+            'judul' => 'required|string|max:255',
+            'slug' => 'nullable|string|max:255|unique:acaras,slug',
             'deskripsi' => 'required|string',
-            'poster' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'lokasi' => 'required|string|max:255',
-            'tanggal_mulai' => 'required|date',
-            'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
+            'tanggal' => 'required|date',
             'waktu_mulai' => 'required',
             'waktu_selesai' => 'required',
-            'kuota_peserta' => 'nullable|integer|min:1',
+            'lokasi' => 'required|string|max:255',
+            'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        if ($request->hasFile('poster')) {
-            $poster = $request->file('poster');
-            $namaPoster = time().'_'.Str::slug($request->nama_acara).'.'.$poster->getClientOriginalExtension();
-            $path = $poster->storeAs('acara', $namaPoster, 'public');
-            $validated['poster'] = $path;
+        // Generate slug otomatis jika kosong
+        $validated['slug'] = $validated['slug'] ?? Str::slug($validated['judul']);
+
+        // Simpan gambar ke folder storage/app/public/acara
+        if ($request->hasFile('gambar')) {
+            $validated['gambar'] = $request->file('gambar')->store('acara', 'public');
         }
 
-        $validated['slug'] = Str::slug($request->nama_acara);
         Acara::create($validated);
 
-        return redirect()->route('admin.acara.index')->with('success', 'Acara berhasil ditambahkan!');
+        return redirect()->route('admin.acara.index')
+                         ->with('success', 'Data acara berhasil ditambahkan.');
+    }
+
+    public function show(Acara $acara)
+    {
+        return view('admin.acara.show', compact('acara'));
     }
 
     public function edit(Acara $acara)
@@ -56,42 +61,44 @@ class AcaraController extends Controller
     public function update(Request $request, Acara $acara)
     {
         $validated = $request->validate([
-            'nama_acara' => 'required|string|max:255',
+            'judul' => 'required|string|max:255',
+            'slug' => 'nullable|string|max:255|unique:acaras,slug,' . $acara->id,
             'deskripsi' => 'required|string',
-            'poster' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'lokasi' => 'required|string|max:255',
-            'tanggal_mulai' => 'required|date',
-            'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
+            'tanggal' => 'required|date',
             'waktu_mulai' => 'required',
             'waktu_selesai' => 'required',
-            'kuota_peserta' => 'nullable|integer|min:1',
+            'lokasi' => 'required|string|max:255',
+            'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        if ($request->hasFile('poster')) {
-            if ($acara->poster && Storage::disk('public')->exists($acara->poster)) {
-                Storage::disk('public')->delete($acara->poster);
-            }
+        // Generate slug otomatis jika kosong
+        $validated['slug'] = $validated['slug'] ?? Str::slug($validated['judul']);
 
-            $poster = $request->file('poster');
-            $namaPoster = time().'_'.Str::slug($request->nama_acara).'.'.$poster->getClientOriginalExtension();
-            $path = $poster->storeAs('acara', $namaPoster, 'public');
-            $validated['poster'] = $path;
+        // Jika upload gambar baru
+        if ($request->hasFile('gambar')) {
+            // Hapus gambar lama jika ada
+            if ($acara->gambar && Storage::disk('public')->exists($acara->gambar)) {
+                Storage::disk('public')->delete($acara->gambar);
+            }
+            // Simpan gambar baru
+            $validated['gambar'] = $request->file('gambar')->store('acara', 'public');
         }
 
-        $validated['slug'] = Str::slug($request->nama_acara);
         $acara->update($validated);
 
-        return redirect()->route('admin.acara.index')->with('success', 'Acara berhasil diperbarui!');
+        return redirect()->route('admin.acara.index')
+                         ->with('success', 'Data acara berhasil diperbarui.');
     }
 
     public function destroy(Acara $acara)
     {
-        if ($acara->poster && Storage::disk('public')->exists($acara->poster)) {
-            Storage::disk('public')->delete($acara->poster);
+        if ($acara->gambar && Storage::disk('public')->exists($acara->gambar)) {
+            Storage::disk('public')->delete($acara->gambar);
         }
 
         $acara->delete();
 
-        return redirect()->route('admin.acara.index')->with('success', 'Acara berhasil dihapus!');
+        return redirect()->route('admin.acara.index')
+                         ->with('success', 'Data acara berhasil dihapus.');
     }
 }

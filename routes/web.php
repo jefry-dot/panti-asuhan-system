@@ -30,12 +30,12 @@ Route::prefix('/')
         Route::get('/profil', [HomeController::class, 'profil'])->name('profil');
 
         // Halaman berita publik
-        Route::get('/berita', [PublicBeritaController::class, 'index'])->name('berita');
-        Route::get('/berita/{berita:slug}', [PublicBeritaController::class, 'show'])->name('berita.show');
+        Route::get('/berita', [AdminBeritaController::class, 'index'])->name('berita');
+        Route::get('/berita/{berita:slug}', [AdminBeritaController::class, 'show'])->name('berita.show');
 
         // Halaman acara publik
-        Route::get('/acara', [PublicAcaraController::class, 'index'])->name('acara');
-        Route::get('/acara/{acara:slug}', [PublicAcaraController::class, 'show'])->name('acara.show');
+        Route::get('/acara', [AdminAcaraController::class, 'index'])->name('acara');
+        Route::get('/acara/{acara:slug}', [AdminAcaraController::class, 'show'])->name('acara.show');
 
         // ✅ Halaman donasi publik
        

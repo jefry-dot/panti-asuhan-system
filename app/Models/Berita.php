@@ -13,9 +13,16 @@ class Berita extends Model
     protected $table = 'berita';
 
     protected $fillable = [
-        'user_id', 'judul', 'slug', 'isi', 'gambar', 'tanggal'
+        'judul',
+        'slug',
+        'konten',
+        'gambar',
+        'penulis',
+        'tanggal_publikasi',
     ];
-
+    protected $casts = [
+        'tanggal_publikasi' => 'date',
+    ];
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

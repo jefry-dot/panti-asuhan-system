@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-{{-- Pastikan ini mengarah ke file layout yang benar, yaitu resources/views/layouts/admin.blade.php --}}
+
 
 @section('title', 'Dashboard Utama')
 
