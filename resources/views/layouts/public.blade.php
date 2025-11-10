@@ -186,7 +186,6 @@
                             class="nav-link {{ request()->routeIs('donation.form') ? 'text-success' : '' }}"
                             href="{{ route('donation.form') }}">Donasi</a></li>
                     @auth
-                        <li class="nav-item"><a class="nav-link" href="{{ route('public.home') }}">Dashboard</a></li>
                         <li class="nav-item">
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
