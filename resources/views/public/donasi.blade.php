@@ -1,122 +1,131 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Donasi untuk Panti Asuhan</title>
-    
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    
-    <!-- Midtrans Snap.js -->
-    <script src="https://app.sandbox.midtrans.com/snap/snap.js" 
-        data-client-key="{{ config('services.midtrans.clientKey') }}"></script>
-    
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    
+@extends('layouts.public')
+
+@section('title', 'Donasi')
+
+@section('styles')
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f9fafb;
-            margin: 50px auto;
-            max-width: 600px;
-            color: #333;
+        .donation-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid rgba(187, 247, 208, 0.4);
+            box-shadow: 0 15px 35px rgba(34, 197, 94, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+            max-width: 650px;
+            margin: 0 auto;
         }
 
-        form {
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        .donation-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(34, 197, 94, 0.15);
         }
 
-        h1 {
+        .donation-card h1 {
             text-align: center;
-            color: #22c55e;
+            color: #16a34a;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
         }
 
         label {
-            display: block;
+            font-weight: 500;
+            color: #065f46;
             margin-top: 10px;
-            font-weight: bold;
         }
 
-        input, textarea {
-            width: 100%;
-            padding: 8px;
-            margin-top: 5px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
+        input,
+        textarea {
+            border: 1px solid #bbf7d0;
+            border-radius: 10px;
+            background-color: #f0fdf4;
+            padding: 10px 12px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: #22c55e;
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
+            background-color: #fff;
         }
 
         button {
-            margin-top: 15px;
-            width: 100%;
-            background: #22c55e;
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
             color: white;
             border: none;
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
+            padding: 12px;
+            width: 100%;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-weight: 600;
+            transition: all 0.3s ease;
         }
 
         button:hover {
-            background: #16a34a;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
         }
     </style>
-</head>
-<body>
-    <h1>Formulir Donasi</h1>
+@endsection
 
-    <form id="donation-form">
-        <label>Nama:</label>
-        <input type="text" name="donor_name" placeholder="Masukkan nama lengkap" required>
+@section('content')
+    <div class="donation-card">
+        <h1>Formulir Donasi</h1>
 
-        <label>Email:</label>
-        <input type="email" name="donor_email" placeholder="Masukkan email" required>
+        <form id="donation-form">
+            <label>Nama:</label>
+            <input type="text" name="donor_name" class="form-control" placeholder="Masukkan nama lengkap" required>
 
-        <label>Jenis Donasi:</label>
-        <input type="text" name="donation_type" placeholder="Contoh: Uang, Barang, dll.">
+            <label>Email:</label>
+            <input type="email" name="donor_email" class="form-control" placeholder="Masukkan email" required>
 
-        <label>Jumlah Donasi (Rp):</label>
-        <input type="number" name="amount" min="1000" placeholder="Masukkan nominal" required>
+            <label>Jenis Donasi:</label>
+            <input type="text" name="donation_type" class="form-control" placeholder="Contoh: Uang, Barang, dll.">
 
-        <label>Catatan:</label>
-        <textarea name="note" rows="3" placeholder="Pesan atau doa..."></textarea>
+            <label>Jumlah Donasi (Rp):</label>
+            <input type="number" name="amount" class="form-control" min="1000" placeholder="Masukkan nominal" required>
 
-        <button type="submit">Donasi Sekarang</button>
-    </form>
+            <label>Catatan:</label>
+            <textarea name="note" class="form-control" rows="3" placeholder="Pesan atau doa..."></textarea>
+
+            <button type="submit">Donasi Sekarang</button>
+        </form>
+    </div>
+@endsection
+
+@section('scripts')
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js"
+        data-client-key="{{ config('services.midtrans.clientKey') }}"></script>
 
     <script>
-        $(document).ready(function() {
-            $('#donation-form').on('submit', function(e) {
+        $(document).ready(function () {
+            $('#donation-form').on('submit', function (e) {
                 e.preventDefault();
 
                 $.ajax({
                     url: "{{ route('donation.store') }}",
                     method: "POST",
                     data: $(this).serialize(),
-                    headers: { 
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') 
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    success: function(response) {
+                    success: function (response) {
                         if (response.snap_token) {
                             snap.pay(response.snap_token, {
-                                onSuccess: function(result) {
+                                onSuccess: function (result) {
                                     alert("✅ Pembayaran berhasil!");
                                     console.log(result);
                                 },
-                                onPending: function(result) {
+                                onPending: function (result) {
                                     alert("⌛ Menunggu pembayaran...");
                                     console.log(result);
                                 },
-                                onError: function(result) {
+                                onError: function (result) {
                                     alert("❌ Pembayaran gagal!");
                                     console.log(result);
                                 },
-                                onClose: function() {
+                                onClose: function () {
                                     alert("⚠️ Anda menutup popup tanpa menyelesaikan pembayaran.");
                                 }
                             });
@@ -124,7 +133,7 @@
                             alert("Terjadi kesalahan. Token pembayaran tidak ditemukan.");
                         }
                     },
-                    error: function(xhr) {
+                    error: function (xhr) {
                         console.error(xhr.responseText);
                         alert("Terjadi kesalahan saat memproses donasi.");
                     }
@@ -132,5 +141,4 @@
             });
         });
     </script>
-</body>
-</html>
+@endsection

@@ -27,7 +27,7 @@ class AdminController extends Controller
         $jumlahBerita = Berita::count();
 
         // Hitung jumlah acara mendatang
-        $jumlahAcara = Acara::whereDate('tanggal_mulai', '>=', Carbon::today())->count();
+        $jumlahAcara = Acara::whereDate('tanggal', '>=', Carbon::today())->count();
 
         // Kirim data ke view
         return view('admin.dashboard', compact(

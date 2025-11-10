@@ -30,18 +30,18 @@ Route::prefix('/')
         Route::get('/profil', [HomeController::class, 'profil'])->name('profil');
 
         // Halaman berita publik
-        Route::get('/berita', [AdminBeritaController::class, 'index'])->name('berita');
-        Route::get('/berita/{berita:slug}', [AdminBeritaController::class, 'show'])->name('berita.show');
+        Route::get('/berita', [PublicBeritaController::class, 'index'])->name('berita');
+        Route::get('/berita/{berita:slug}', [PublicBeritaController::class, 'show'])->name('berita.show');
 
         // Halaman acara publik
-        Route::get('/acara', [AdminAcaraController::class, 'index'])->name('acara');
-        Route::get('/acara/{acara:slug}', [AdminAcaraController::class, 'show'])->name('acara.show');
+        Route::get('/acara', [PublicAcaraController::class, 'index'])->name('acara');
+        Route::get('/acara/{acara:slug}', [PublicAcaraController::class, 'show'])->name('acara.show');
 
         // ✅ Halaman donasi publik
-       
+    
     });
 
-    Route::controller(DonationController::class)->group(function () {
+Route::controller(DonationController::class)->group(function () {
     Route::get('/donasi', 'index')->name('donation.form');
     Route::post('/donasi', 'store')->name('donation.store');
     Route::post('/midtrans/callback', 'callback')->name('midtrans.callback');
@@ -81,7 +81,16 @@ Route::middleware(['auth', 'role:admin'])
             Route::delete('/{acara}', [AdminAcaraController::class, 'destroy'])->name('destroy');
         });
 
-       Route::get('/donasi', [AdminDonasiController::class, 'index'])->name('donasi.index');
+        // ===== CRUD DONASI =====
+        Route::prefix('donasi')->name('donasi.')->group(function () {
+            Route::get('/', [AdminDonasiController::class, 'index'])->name('index');
+            Route::get('/create', [AdminDonasiController::class, 'create'])->name('create');
+            Route::post('/', [AdminDonasiController::class, 'store'])->name('store');
+            Route::get('/{donasi}', [AdminDonasiController::class, 'show'])->name('show');
+            Route::get('/{donasi}/edit', [AdminDonasiController::class, 'edit'])->name('edit');
+            Route::put('/{donasi}', [AdminDonasiController::class, 'update'])->name('update');
+            Route::delete('/{donasi}', [AdminDonasiController::class, 'destroy'])->name('destroy');
+        });
     });
 
 
