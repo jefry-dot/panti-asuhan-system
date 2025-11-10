@@ -7,22 +7,22 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     public function index() {
-        return view('user.dashboard');
+        return view('admin.dashboard');
     }
 
     public function donations() {
-        return view('user.donations');
+        return view('admin.donasi.index');
     }
 
     public function children() {
-        return view('user.children');
+        return view('admin.dashboard');
     }
 
     public function history() {
-        return view('user.history');
+        return view('admin.dashboard');
     }
 
     public function profile() {
-        return view('user.profile');
+        return view('admin.dashboard');
     }
 }
