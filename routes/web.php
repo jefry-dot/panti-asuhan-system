@@ -82,15 +82,11 @@ Route::middleware(['auth', 'role:admin'])
         });
 
         // ===== CRUD DONASI =====
-        Route::prefix('donasi')->name('donasi.')->group(function () {
-            Route::get('/', [AdminDonasiController::class, 'index'])->name('index');
-            Route::get('/create', [AdminDonasiController::class, 'create'])->name('create');
-            Route::post('/', [AdminDonasiController::class, 'store'])->name('store');
-            Route::get('/{donasi}', [AdminDonasiController::class, 'show'])->name('show');
-            Route::get('/{donasi}/edit', [AdminDonasiController::class, 'edit'])->name('edit');
-            Route::put('/{donasi}', [AdminDonasiController::class, 'update'])->name('update');
-            Route::delete('/{donasi}', [AdminDonasiController::class, 'destroy'])->name('destroy');
-        });
+Route::prefix('donasi')->name('donasi.')->group(function () {
+    Route::get('/', [AdminDonasiController::class, 'index'])->name('index');
+    Route::delete('/{id}', [AdminDonasiController::class, 'destroy'])->name('destroy');
+});
+
     });
 
 

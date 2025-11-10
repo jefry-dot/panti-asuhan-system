@@ -16,4 +16,12 @@ class DonasiController extends Controller
 
         return view('admin.donasi.index', compact('donations'));
     }
+    public function destroy($id)
+{
+    $donation = Donation::findOrFail($id);
+    $donation->delete();
+
+    return redirect()->route('admin.donasi.index')->with('success', 'Data donasi berhasil dihapus.');
+}
+
 }
