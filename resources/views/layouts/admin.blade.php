@@ -239,10 +239,17 @@
                     <span>Manajemen Acara</span>
                 </a>
             </li>
+            <li class="nav-item {{ request()->routeIs('admin.donasi.*') ? 'active' : '' }}">
+                <a class="nav-link text-dark" href="{{ route('admin.donasi.index') }}">
+                    <i class="fas fa-fw fa-donate"></i>
+                    <span>Riwayat Donasi</span>
+                </a>
+            </li>
             <hr class="sidebar-divider d-none d-md-block">
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle" style="background-color: #22c55e;"></button>
             </div>
+
         </ul>
 
         <div id="content-wrapper" class="d-flex flex-column">
