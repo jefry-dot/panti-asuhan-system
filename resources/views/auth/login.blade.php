@@ -261,12 +261,12 @@
         Google
     </a>
 </div>
-        <!-- Footer -->
-        <div class="mt-8 text-center text-emerald-600 text-sm font-medium">
-            <p>Belum punya akun? 
-                <a href="#" class="text-emerald-700 font-semibold hover:text-emerald-900 transition duration-300 underline decoration-2 decoration-emerald-400">Daftar di sini</a>
-            </p>
-        </div>
-    </div>
+    <!-- Footer -->
+<div class="mt-8 text-center text-emerald-600 text-sm font-medium">
+    <p>Belum punya akun? 
+        <a href="/register" class="text-emerald-700 font-semibold hover:text-emerald-900 transition duration-300 underline decoration-2 decoration-emerald-400">Daftar di sini</a>
+    </p>
+</div>
+    
 </body>
 </html>
