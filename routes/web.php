@@ -14,12 +14,6 @@ use App\Http\Controllers\Public\HomeController;
 use App\Http\Controllers\Public\BeritaController as PublicBeritaController;
 use App\Http\Controllers\Public\AcaraController as PublicAcaraController;
 
-
-
-
-
-
-
 // ==================== ROUTE PUBLIK ==================== //
 
 Route::prefix('/')
@@ -37,7 +31,7 @@ Route::prefix('/')
         Route::get('/acara', [PublicAcaraController::class, 'index'])->name('acara');
         Route::get('/acara/{acara:slug}', [PublicAcaraController::class, 'show'])->name('acara.show');
 
-        // ✅ Halaman donasi publik
+        // Halaman donasi publik
     
     });
 
@@ -111,6 +105,23 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+
+// ==================== ROUTE LUPA PASSWORD ==================== //
+Route::middleware('guest')->group(function () {
+    // Lupa Password
+    Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
+        ->name('password.request');
+        
+    Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
+        ->name('password.email');
+        
+    // Reset Password  
+    Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
+        ->name('password.reset');
+        
+    Route::post('reset-password', [NewPasswordController::class, 'store'])
+        ->name('password.update');
+});
 
 // ==================== ROUTE AUTHENTICATION (LOGIN/REGISTER) ==================== //
 require __DIR__ . '/auth.php';
