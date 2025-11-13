@@ -84,6 +84,7 @@ Route::middleware(['auth', 'role:admin'])
         // ===== CRUD DONASI =====
 Route::prefix('donasi')->name('donasi.')->group(function () {
     Route::get('/', [AdminDonasiController::class, 'index'])->name('index');
+    Route::get('/laporan', [AdminDonasiController::class, 'laporan'])->name('laporan');
     Route::delete('/{id}', [AdminDonasiController::class, 'destroy'])->name('destroy');
 });
 

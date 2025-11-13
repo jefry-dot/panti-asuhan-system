@@ -115,7 +115,7 @@
                             snap.pay(response.snap_token, {
                                 onSuccess: function (result) {
                                     alert("✅ Pembayaran berhasil!");
-                                    console.log(result);
+                                    window.location.href = "/"; // Redirect to home or a thank you page
                                 },
                                 onPending: function (result) {
                                     alert("⌛ Menunggu pembayaran...");
@@ -134,8 +134,27 @@
                         }
                     },
                     error: function (xhr) {
+                        let errorMessage = "Terjadi kesalahan saat memproses donasi.";
+                        
+                        if (xhr.status === 422) {
+                            let errors = xhr.responseJSON.errors;
+                            errorMessage = "Terdapat kesalahan validasi:\n";
+                            $.each(errors, function (key, value) {
+                                errorMessage += "- " + value[0] + "\n";
+                            });
+                        } else if (xhr.status === 419) {
+                            errorMessage = "Sesi Anda telah berakhir. Silakan segarkan halaman ini dan coba lagi.";
+                        } else if (xhr.status === 500) {
+                            // Check if Midtrans config is likely the issue
+                            if(xhr.responseText.includes("Midtrans")) {
+                                errorMessage = "Terjadi kesalahan pada server. Kemungkinan konfigurasi pembayaran (Midtrans) belum lengkap. Silakan hubungi admin.";
+                            } else {
+                                errorMessage = "Terjadi kesalahan internal pada server. Silakan coba lagi nanti.";
+                            }
+                        }
+                        
                         console.error(xhr.responseText);
-                        alert("Terjadi kesalahan saat memproses donasi.");
+                        alert(errorMessage);
                     }
                 });
             });

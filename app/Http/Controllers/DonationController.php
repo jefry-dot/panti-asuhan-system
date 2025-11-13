@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Donation;
 use Midtrans\Config;
 use Midtrans\Snap;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\DonationReceived;
+use Illuminate\Support\Facades\Log;
 
 
 class DonationController extends Controller
@@ -14,7 +17,7 @@ class DonationController extends Controller
     {
         return view('public.donasi');
     }
-
+    
     public function store(Request $request)
     {
         $request->validate([
@@ -69,6 +72,9 @@ class DonationController extends Controller
 
             if ($request->transaction_status == 'capture' || $request->transaction_status == 'settlement') {
                 $donation->update(['status' => 'success']);
+                // Kirim email setelah donasi berhasil
+                Log::info('Attempting to send donation confirmation email to: ' . $donation->donor_email);
+                Mail::to($donation->donor_email)->send(new DonationReceived($donation));
             } elseif ($request->transaction_status == 'pending') {
                 $donation->update(['status' => 'pending']);
             } else {
