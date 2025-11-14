@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -22,19 +23,27 @@
         body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg,
-                #fffbeb 0%,
-                #fef3c7 25%,
-                #fef7ed 50%,
-                #ecfccb 75%,
-                #d9f99d 100%);
+                    #fffbeb 0%,
+                    #fef3c7 25%,
+                    #fef7ed 50%,
+                    #ecfccb 75%,
+                    #d9f99d 100%);
             background-size: 400% 400%;
             animation: gradientShift 15s ease infinite;
         }
 
         @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
         }
 
         .dashboard-card {
@@ -175,31 +184,113 @@
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
+
+            0%,
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+            }
         }
 
-        .stat-card { border-left: 4px solid #22c55e; }
-        .progress-bar { background: linear-gradient(90deg, #22c55e 0%, #16a34a 100%); height: 8px; border-radius: 4px; }
-        .donation-item { transition: all 0.3s ease; border-left: 3px solid transparent; }
-        .donation-item:hover { border-left-color: #22c55e; transform: translateX(5px); }
-        .input-group { position: relative; }
-        .input-group i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #22c55e; transition: all 0.3s ease; }
-        .input-group input { padding-left: 45px; transition: all 0.3s ease; }
-        .input-group input:focus+i { color: #16a34a; transform: translateY(-50%) scale(1.1); }
-        .login-card { background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); border: 1px solid rgba(187, 247, 208, 0.4); box-shadow: 0 20px 40px rgba(34, 197, 94, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); }
-        .social-login { transition: all 0.3s ease; border: 1px solid #e2e8f0; background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%); }
-        .social-login:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(34, 197, 94, 0.2); border-color: #22c55e; }
-        .divider { background: linear-gradient(90deg, transparent, #22c55e, transparent); height: 1px; }
-        .hidden { display: none; }
-        .table-card { background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); border: 1px solid rgba(187, 247, 208, 0.4); box-shadow: 0 10px 30px rgba(34, 197, 94, 0.1); backdrop-filter: blur(10px); }
-        .form-card { background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); border: 1px solid rgba(187, 247, 208, 0.4); box-shadow: 0 15px 35px rgba(34, 197, 94, 0.1); backdrop-filter: blur(10px); }
-        .action-btn { transition: all 0.3s ease; }
-        .action-btn:hover { transform: translateY(-2px); }
+        .stat-card {
+            border-left: 4px solid #22c55e;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #22c55e 0%, #16a34a 100%);
+            height: 8px;
+            border-radius: 4px;
+        }
+
+        .donation-item {
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .donation-item:hover {
+            border-left-color: #22c55e;
+            transform: translateX(5px);
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #22c55e;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input {
+            padding-left: 45px;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus+i {
+            color: #16a34a;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .login-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid rgba(187, 247, 208, 0.4);
+            box-shadow: 0 20px 40px rgba(34, 197, 94, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .social-login {
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+        }
+
+        .social-login:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(34, 197, 94, 0.2);
+            border-color: #22c55e;
+        }
+
+        .divider {
+            background: linear-gradient(90deg, transparent, #22c55e, transparent);
+            height: 1px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .table-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid rgba(187, 247, 208, 0.4);
+            box-shadow: 0 10px 30px rgba(34, 197, 94, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .form-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid rgba(187, 247, 208, 0.4);
+            box-shadow: 0 15px 35px rgba(34, 197, 94, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .action-btn {
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+        }
     </style>
 
     {{-- YIELD scripts di HEAD jika ada CSS/JS yang perlu dimuat di awal --}}
-    @yield('styles') 
+    @yield('styles')
 </head>
 
 <body id="page-top">
@@ -211,7 +302,8 @@
 
     <div id="wrapper" class="d-flex">
         <ul class="navbar-nav bg-white sidebar sidebar-light accordion" id="accordionSidebar">
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('admin.dashboard') }}">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center"
+                href="{{ route('admin.dashboard') }}">
                 <div class="sidebar-brand-icon">
                     <div class="logo-circle rounded-circle d-flex align-items-center justify-content-center"
                         style="width: 40px; height: 40px;">
@@ -271,11 +363,11 @@
                                     @endauth
                                 </span>
                                 @auth
-                                <img class="img-profile rounded-circle"
-                                    src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=22c55e&color=ffffff">
+                                    <img class="img-profile rounded-circle"
+                                        src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=22c55e&color=ffffff">
                                 @else
-                                <img class="img-profile rounded-circle"
-                                    src="https://ui-avatars.com/api/?name=Admin&background=22c55e&color=ffffff">
+                                    <img class="img-profile rounded-circle"
+                                        src="https://ui-avatars.com/api/?name=Admin&background=22c55e&color=ffffff">
                                 @endauth
                             </a>
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -335,9 +427,9 @@
                     $('.sidebar .sidebar-brand-text, .sidebar .nav-item .nav-link span').fadeOut(0); // Gunakan 0 untuk transisi cepat
                 } else {
                     // Gunakan delay agar tampil setelah sidebar melebar
-                    setTimeout(function() {
+                    setTimeout(function () {
                         $('.sidebar .sidebar-brand-text, .sidebar .nav-item .nav-link span').fadeIn(100);
-                    }, 200); 
+                    }, 200);
                 }
             });
 
@@ -356,4 +448,5 @@
 
     @yield('scripts')
 </body>
+
 </html>

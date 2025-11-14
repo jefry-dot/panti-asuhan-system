@@ -164,7 +164,7 @@
     <nav class="navbar navbar-expand-lg navbar-light sticky-top">
         <div class="container">
             <a class="navbar-brand" href="{{ route('public.home') }}">
-                <i class="fas fa-hands-helping me-2"></i>Yayasan Alza el Rahmah
+                <i class="fas fa-hands-helping me-2"></i>Yayasan Alza el Rohmah
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -210,7 +210,7 @@
     {{-- 🌿 Footer --}}
     <footer>
         <div class="container">
-            <p class="mb-0 text-muted">&copy; {{ date('Y') }} Yayasan Alza el Rahmah. Semua hak dilindungi.</p>
+            <p class="mb-0 text-muted">&copy; {{ date('Y') }} Yayasan Alza el Rohmah. Semua hak dilindungi.</p>
         </div>
     </footer>
 

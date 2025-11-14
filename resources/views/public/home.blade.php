@@ -1,12 +1,12 @@
 @extends('layouts.public')
 
-@section('title', 'Beranda - Yayasan Alza el Rahmah')
+@section('title', 'Beranda - Yayasan Alza el Rohmah')
 
 @section('content')
     <!-- Hero Section -->
     <section class="hero-section text-center text-white">
         <div class="container">
-            <h1 class="display-4 fw-bold mb-4">Selamat Datang di Yayasan Alza el Rahmah</h1>
+            <h1 class="display-4 fw-bold mb-4">Selamat Datang di Yayasan Alza el Rohmah</h1>
             <p class="lead mb-4">
                 Membantu anak-anak yatim piatu meraih masa depan yang lebih baik melalui pendidikan, kasih sayang, dan
                 dukungan
