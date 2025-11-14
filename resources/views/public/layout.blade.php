@@ -18,7 +18,7 @@
                     <li class="nav-item"><a href="{{ route('public.home') }}" class="nav-link">Beranda</a></li>
                     <li class="nav-item"><a href="{{ route('public.berita') }}" class="nav-link">Berita</a></li>
                     <li class="nav-item"><a href="{{ route('public.acara') }}" class="nav-link">Acara</a></li>
-                    <li class="nav-item"><a href="{{ route('donation.form') }}" class="nav-link">Donasi</a></li>
+                    <li class="nav-item"><a href="{{ route('public.donasi') }}" class="nav-link">Donasi</a></li>
                 </ul>
             </div>
         </div>

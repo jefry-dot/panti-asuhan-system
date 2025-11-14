@@ -104,7 +104,7 @@
                 e.preventDefault();
 
                 $.ajax({
-                    url: "{{ route('donation.store') }}",
+                    url: "{{ route('public.donasi.store') }}",
                     method: "POST",
                     data: $(this).serialize(),
                     headers: {
@@ -114,16 +114,13 @@
                         if (response.snap_token) {
                             snap.pay(response.snap_token, {
                                 onSuccess: function (result) {
-                                    alert("✅ Pembayaran berhasil!");
-                                    window.location.href = "/"; // Redirect to home or a thank you page
+                                    window.location.href = "{{ route('public.donasi.finish') }}?status=success&order_id=" + result.order_id;
                                 },
                                 onPending: function (result) {
-                                    alert("⌛ Menunggu pembayaran...");
-                                    console.log(result);
+                                    window.location.href = "{{ route('public.donasi.finish') }}?status=pending&order_id=" + result.order_id;
                                 },
                                 onError: function (result) {
-                                    alert("❌ Pembayaran gagal!");
-                                    console.log(result);
+                                    window.location.href = "{{ route('public.donasi.finish') }}?status=failed&order_id=" + result.order_id;
                                 },
                                 onClose: function () {
                                     alert("⚠️ Anda menutup popup tanpa menyelesaikan pembayaran.");

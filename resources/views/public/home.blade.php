@@ -11,7 +11,7 @@
                 Membantu anak-anak yatim piatu meraih masa depan yang lebih baik melalui pendidikan, kasih sayang, dan
                 dukungan
             </p>
-            <a href="{{ route('donation.form') }}" class="btn btn-light btn-lg px-4 me-2">
+            <a href="{{ route('public.donasi') }}" class="btn btn-light btn-lg px-4 me-2">
                 <i class="fas fa-donate me-2"></i>Donasi Sekarang
             </a>
 

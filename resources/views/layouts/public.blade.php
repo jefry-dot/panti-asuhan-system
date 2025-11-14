@@ -184,8 +184,8 @@
                             class="nav-link {{ request()->routeIs('public.acara*') ? 'text-success' : '' }}"
                             href="{{ route('public.acara') }}">Acara</a></li>
                     <li class="nav-item"><a
-                            class="nav-link {{ request()->routeIs('donation.form') ? 'text-success' : '' }}"
-                            href="{{ route('donation.form') }}">Donasi</a></li>
+                            class="nav-link {{ request()->routeIs('public.donasi') ? 'text-success' : '' }}"
+                            href="{{ route('public.donasi') }}">Donasi</a></li>
                     @auth
                         <li class="nav-item">
                             <form method="POST" action="{{ route('logout') }}">

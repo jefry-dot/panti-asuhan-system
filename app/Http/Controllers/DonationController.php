@@ -63,7 +63,7 @@ class DonationController extends Controller
     public function callback(Request $request)
     {
         $serverKey = config('services.midtrans.serverKey');
-        $hashed = hash('sha512', 
+        $hashed = hash('sha512',
             $request->order_id.$request->status_code.$request->gross_amount.$serverKey
         );
 
@@ -81,5 +81,19 @@ class DonationController extends Controller
                 $donation->update(['status' => 'failed']);
             }
         }
+    }
+
+    // Halaman finish setelah pembayaran
+    public function finish(Request $request)
+    {
+        $status = $request->query('status', 'success');
+        $orderId = $request->query('order_id');
+
+        $donation = null;
+        if ($orderId) {
+            $donation = Donation::find($orderId);
+        }
+
+        return view('public.donasi-finish', compact('status', 'donation'));
     }
 }

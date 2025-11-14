@@ -6,9 +6,8 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
-
-Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [LoginController::class, 'login']);
+use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\Auth\NewPasswordController;
 
 // ==================== CONTROLLER IMPORT ==================== //
 use App\Http\Controllers\Admin\AdminController;
@@ -40,14 +39,15 @@ Route::prefix('/')
         Route::get('/acara/{acara:slug}', [PublicAcaraController::class, 'show'])->name('acara.show');
 
         // Halaman donasi publik
-    
+        Route::controller(DonationController::class)->group(function () {
+            Route::get('/donasi', 'index')->name('donasi');
+            Route::post('/donasi', 'store')->name('donasi.store');
+            Route::get('/donasi/finish', 'finish')->name('donasi.finish');
+        });
     });
 
-Route::controller(DonationController::class)->group(function () {
-    Route::get('/donasi', 'index')->name('donation.form');
-    Route::post('/donasi', 'store')->name('donation.store');
-    Route::post('/midtrans/callback', 'callback')->name('midtrans.callback');
-});
+// Midtrans callback (outside public group because it's called by Midtrans server)
+Route::post('/midtrans/callback', [DonationController::class, 'callback'])->name('midtrans.callback');
 
 // ==================== ROUTE ADMIN ==================== //
 Route::middleware(['auth', 'role:admin', 'verified'])
