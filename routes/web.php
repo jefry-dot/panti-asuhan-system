@@ -4,22 +4,11 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
-
-Route::get('/email/verify', function () {
-    return view('auth.verify-email');
-})->middleware('auth')->name('verification.notice');
-
-Route::get('/email/verify/{id}/{hash}', VerifyEmailController::class)
-    ->middleware(['auth', 'signed'])
-    ->name('verification.verify');
-
-// Routes untuk verifikasi email Google
-Route::post('/send-verification', [VerificationController::class, 'sendVerification'])->name('verification.send');
-Route::post('/verify-code', [VerificationController::class, 'verify'])->name('verification.verify');
-Route::get('/verification', [VerificationController::class, 'showVerificationForm'])->name('verification.form');
 
 // ==================== CONTROLLER IMPORT ==================== //
 use App\Http\Controllers\Admin\AdminController;
@@ -61,7 +50,7 @@ Route::controller(DonationController::class)->group(function () {
 });
 
 // ==================== ROUTE ADMIN ==================== //
-Route::middleware(['auth', 'role:admin'])
+Route::middleware(['auth', 'role:admin', 'verified'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
@@ -105,7 +94,7 @@ Route::prefix('donasi')->name('donasi.')->group(function () {
 
 
 // ==================== ROUTE USER (DONATUR) ==================== //
-Route::middleware(['auth', 'role:user'])
+Route::middleware(['auth', 'role:user'. 'verified'])
     ->prefix('user')
     ->name('user.')
     ->group(function () {
@@ -144,3 +133,17 @@ Route::middleware('guest')->group(function () {
 
 // ==================== ROUTE AUTHENTICATION (LOGIN/REGISTER) ==================== //
 require __DIR__ . '/auth.php';
+
+Route::get('/email/verify', function () {
+    return view('auth.verify-email'); // Breeze biasanya sudah punya view ini
+})->middleware('auth')->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+    return redirect('/user/dashboard'); 
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+    return back()->with('status', 'verification-link-sent');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
