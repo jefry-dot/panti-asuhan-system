@@ -8,12 +8,14 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\Public\ContactController;
 
 // ==================== CONTROLLER IMPORT ==================== //
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\BeritaController as AdminBeritaController;
 use App\Http\Controllers\Admin\AcaraController as AdminAcaraController;
 use App\Http\Controllers\Admin\DonasiController as AdminDonasiController;
+use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
@@ -48,6 +50,11 @@ Route::prefix('/')
 
 // Midtrans callback (outside public group because it's called by Midtrans server)
 Route::post('/midtrans/callback', [DonationController::class, 'callback'])->name('midtrans.callback');
+
+// ==================== ROUTE HUBUNGI KAMI ==================== //
+// ROUTE HUBUNGI KAMI
+Route::get('/hubungi-kami', [ContactController::class, 'index'])->name('public.contact');
+Route::post('/hubungi-kami', [ContactController::class, 'store'])->name('public.contact.store');
 
 // ==================== ROUTE ADMIN ==================== //
 Route::middleware(['auth', 'role:admin', 'verified'])
@@ -84,17 +91,22 @@ Route::middleware(['auth', 'role:admin', 'verified'])
         });
 
         // ===== CRUD DONASI =====
-Route::prefix('donasi')->name('donasi.')->group(function () {
-    Route::get('/', [AdminDonasiController::class, 'index'])->name('index');
-    Route::get('/laporan', [AdminDonasiController::class, 'laporan'])->name('laporan');
-    Route::delete('/{id}', [AdminDonasiController::class, 'destroy'])->name('destroy');
-});
+        Route::prefix('donasi')->name('donasi.')->group(function () {
+            Route::get('/', [AdminDonasiController::class, 'index'])->name('index');
+            Route::get('/laporan', [AdminDonasiController::class, 'laporan'])->name('laporan');
+            Route::delete('/{id}', [AdminDonasiController::class, 'destroy'])->name('destroy');
+        });
+
+        // Pesan Masuk (Hubungi Kami)
+        Route::get('/pesan', [MessageController::class, 'index'])->name('pesan.index');
+        Route::get('/pesan/{message}', [MessageController::class, 'show'])->name('pesan.show');
+        Route::delete('/pesan/{message}', [MessageController::class, 'destroy'])->name('pesan.destroy');
 
     });
 
 
 // ==================== ROUTE USER (DONATUR) ==================== //
-Route::middleware(['auth', 'role:user'. 'verified'])
+Route::middleware(['auth', 'role:user' . 'verified'])
     ->prefix('user')
     ->name('user.')
     ->group(function () {
@@ -119,14 +131,14 @@ Route::middleware('guest')->group(function () {
     // Lupa Password
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
         ->name('password.request');
-        
+
     Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
         ->name('password.email');
-        
+
     // Reset Password  
     Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
         ->name('password.reset');
-        
+
     Route::post('reset-password', [NewPasswordController::class, 'store'])
         ->name('password.update');
 });
@@ -140,7 +152,7 @@ Route::get('/email/verify', function () {
 
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
-    return redirect('/user/dashboard'); 
+    return redirect('/user/dashboard');
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
 Route::post('/email/verification-notification', function (Request $request) {

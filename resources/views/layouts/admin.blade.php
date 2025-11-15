@@ -337,6 +337,15 @@
                     <span>Riwayat Donasi</span>
                 </a>
             </li>
+            <li class="nav-item {{ request()->routeIs('admin.pesan.*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('admin.pesan.index') }}">
+                    📩 Pesan Masuk
+                    @if($unreadCount > 0)
+                        <span class="badge bg-danger ms-2">{{ $unreadCount }}</span>
+                    @endif
+                </a>
+            </li>
+
             <hr class="sidebar-divider d-none d-md-block">
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle" style="background-color: #22c55e;"></button>
