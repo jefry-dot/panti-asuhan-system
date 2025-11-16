@@ -52,7 +52,6 @@ Route::prefix('/')
 Route::post('/midtrans/callback', [DonationController::class, 'callback'])->name('midtrans.callback');
 
 // ==================== ROUTE HUBUNGI KAMI ==================== //
-// ROUTE HUBUNGI KAMI
 Route::get('/hubungi-kami', [ContactController::class, 'index'])->name('public.contact');
 Route::post('/hubungi-kami', [ContactController::class, 'store'])->name('public.contact.store');
 
@@ -101,12 +100,10 @@ Route::middleware(['auth', 'role:admin', 'verified'])
         Route::get('/pesan', [MessageController::class, 'index'])->name('pesan.index');
         Route::get('/pesan/{message}', [MessageController::class, 'show'])->name('pesan.show');
         Route::delete('/pesan/{message}', [MessageController::class, 'destroy'])->name('pesan.destroy');
-
     });
 
-
 // ==================== ROUTE USER (DONATUR) ==================== //
-Route::middleware(['auth', 'role:user' . 'verified'])
+Route::middleware(['auth', 'role:user', 'verified'])
     ->prefix('user')
     ->name('user.')
     ->group(function () {
@@ -117,14 +114,12 @@ Route::middleware(['auth', 'role:user' . 'verified'])
         Route::get('/profil', [UserController::class, 'profil'])->name('profil');
     });
 
-
 // ==================== ROUTE PROFIL (UNTUK SEMUA USER LOGIN) ==================== //
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
 
 // ==================== ROUTE LUPA PASSWORD ==================== //
 Route::middleware('guest')->group(function () {
@@ -147,7 +142,7 @@ Route::middleware('guest')->group(function () {
 require __DIR__ . '/auth.php';
 
 Route::get('/email/verify', function () {
-    return view('auth.verify-email'); // Breeze biasanya sudah punya view ini
+    return view('auth.verify-email');
 })->middleware('auth')->name('verification.notice');
 
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
