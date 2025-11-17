@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -47,15 +47,33 @@
             transform: translateY(-50%);
             color: #22c55e;
             transition: all 0.3s ease;
+            z-index: 10;
         }
         
         .input-group input {
             padding-left: 45px;
+            padding-right: 45px;
             transition: all 0.3s ease;
         }
         
         .input-group input:focus + i {
             color: #16a34a;
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        
+        .password-toggle:hover {
+            color: #22c55e;
             transform: translateY(-50%) scale(1.1);
         }
         
@@ -84,18 +102,6 @@
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 12px 25px rgba(34, 197, 94, 0.4);
-        }
-        
-        .social-login {
-            transition: all 0.3s ease;
-            border: 1px solid #e2e8f0;
-            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
-        }
-        
-        .social-login:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(34, 197, 94, 0.2);
-            border-color: #22c55e;
         }
         
         .logo-circle {
@@ -146,11 +152,6 @@
             0%, 100% { transform: translateY(0px) rotate(0deg); }
             50% { transform: translateY(-20px) rotate(180deg); }
         }
-        
-        .divider {
-            background: linear-gradient(90deg, transparent, #22c55e, transparent);
-            height: 1px;
-        }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4 relative">
@@ -191,7 +192,7 @@
                         class="w-full px-4 py-3 rounded-xl bg-white border border-emerald-200 text-emerald-800 placeholder-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition duration-300 shadow-sm" 
                         type="email" 
                         name="email" 
-                        placeholder="rikto@gmail.com"
+                        placeholder="adminyayasan@gmail.com"
                         :value="old('email')" 
                         required 
                         autofocus 
@@ -215,6 +216,8 @@
                         required 
                         autocomplete="current-password" 
                     />
+                    <!-- Eye Icon untuk Show/Hide Password -->
+                    <i class="fas fa-eye password-toggle" id="passwordToggle"></i>
                 </div>
                 <x-input-error :messages="$errors->get('password')" class="mt-2 text-red-500 font-medium" />
             </div>
@@ -247,26 +250,35 @@
             </div>
         </form>
 
-        <!-- Divider -->
-        <div class="my-6 flex items-center">
-            <div class="flex-grow divider"></div>
-            <span class="mx-4 text-emerald-600 text-sm font-medium">Atau lanjutkan dengan</span>
-            <div class="flex-grow divider"></div>
+        <!-- Footer -->
+        <div class="mt-8 text-center text-emerald-600 text-sm font-medium">
+            <p>Belum punya akun? 
+                <a href="/register" class="text-emerald-700 font-semibold hover:text-emerald-900 transition duration-300 underline decoration-2 decoration-emerald-400">Daftar di sini</a>
+            </p>
         </div>
+    </div>
 
-<!-- Social Login -->
-<div class="flex justify-center mt-4">
-    <a href="#" class="social-login hover:bg-emerald-50 text-emerald-700 font-medium py-3 px-4 rounded-xl flex items-center justify-center transition duration-300">
-        <i class="fab fa-google mr-2 text-emerald-600"></i>
-        Google
-    </a>
-</div>
-    <!-- Footer -->
-<div class="mt-8 text-center text-emerald-600 text-sm font-medium">
-    <p>Belum punya akun? 
-        <a href="/register" class="text-emerald-700 font-semibold hover:text-emerald-900 transition duration-300 underline decoration-2 decoration-emerald-400">Daftar di sini</a>
-    </p>
-</div>
-    
+    <!-- JavaScript untuk Show/Hide Password -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const passwordInput = document.getElementById('password');
+            const passwordToggle = document.getElementById('passwordToggle');
+            
+            passwordToggle.addEventListener('click', function() {
+                // Toggle tipe input
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                
+                // Toggle icon mata
+                if (type === 'text') {
+                    passwordToggle.classList.remove('fa-eye');
+                    passwordToggle.classList.add('fa-eye-slash');
+                } else {
+                    passwordToggle.classList.remove('fa-eye-slash');
+                    passwordToggle.classList.add('fa-eye');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
