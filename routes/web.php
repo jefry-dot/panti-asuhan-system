@@ -93,6 +93,7 @@ Route::middleware(['auth', 'role:admin', 'verified'])
         Route::prefix('donasi')->name('donasi.')->group(function () {
             Route::get('/', [AdminDonasiController::class, 'index'])->name('index');
             Route::get('/laporan', [AdminDonasiController::class, 'laporan'])->name('laporan');
+            Route::get('/laporan/export-pdf', [AdminDonasiController::class, 'exportPdf'])->name('laporan.export-pdf');
             Route::delete('/{id}', [AdminDonasiController::class, 'destroy'])->name('destroy');
         });
 
