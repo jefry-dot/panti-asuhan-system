@@ -100,17 +100,34 @@
 
     <script>
         $(document).ready(function () {
+            console.log('Donation form script loaded');
+            console.log('CSRF Token:', $('meta[name="csrf-token"]').attr('content'));
+
             $('#donation-form').on('submit', function (e) {
                 e.preventDefault();
+                console.log('Form submitted');
+
+                const submitBtn = $(this).find('button[type="submit"]');
+                const originalText = submitBtn.text();
+                submitBtn.prop('disabled', true).text('Memproses...');
+
+                const formData = $(this).serialize();
+                console.log('Form data:', formData);
 
                 $.ajax({
                     url: "{{ route('public.donasi.store') }}",
                     method: "POST",
-                    data: $(this).serialize(),
+                    data: formData,
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
+                    beforeSend: function() {
+                        console.log('Sending request to:', "{{ route('public.donasi.store') }}");
+                    },
                     success: function (response) {
+                        console.log('Response received:', response);
+                        submitBtn.prop('disabled', false).text(originalText);
+
                         if (response.error) {
                             alert("❌ " + response.message);
                             console.error('Donation error:', response.message);
@@ -118,29 +135,42 @@
                         }
 
                         if (response.snap_token) {
+                            console.log('Snap token received, opening payment window');
                             snap.pay(response.snap_token, {
                                 onSuccess: function (result) {
+                                    console.log('Payment success:', result);
                                     window.location.href = "{{ route('public.donasi.finish') }}?status=success&order_id=" + result.order_id;
                                 },
                                 onPending: function (result) {
+                                    console.log('Payment pending:', result);
                                     window.location.href = "{{ route('public.donasi.finish') }}?status=pending&order_id=" + result.order_id;
                                 },
                                 onError: function (result) {
+                                    console.log('Payment error:', result);
                                     window.location.href = "{{ route('public.donasi.finish') }}?status=failed&order_id=" + result.order_id;
                                 },
                                 onClose: function () {
+                                    console.log('Payment popup closed');
                                     alert("⚠️ Anda menutup popup tanpa menyelesaikan pembayaran.");
+                                    submitBtn.prop('disabled', false).text(originalText);
                                 }
                             });
                         } else {
                             alert("❌ Terjadi kesalahan. Token pembayaran tidak ditemukan.");
+                            console.error('No snap_token in response');
                         }
                     },
-                    error: function (xhr) {
+                    error: function (xhr, status, error) {
+                        submitBtn.prop('disabled', false).text(originalText);
+
                         let errorMessage = "Terjadi kesalahan saat memproses donasi.";
 
-                        console.log('XHR Status:', xhr.status);
-                        console.log('XHR Response:', xhr.responseText);
+                        console.error('AJAX Error:');
+                        console.error('XHR Status:', xhr.status);
+                        console.error('Status Text:', status);
+                        console.error('Error:', error);
+                        console.error('XHR Response:', xhr.responseText);
+                        console.error('XHR Object:', xhr);
 
                         if (xhr.status === 422) {
                             let errors = xhr.responseJSON.errors;
@@ -149,7 +179,7 @@
                                 errorMessage += "- " + value[0] + "\n";
                             });
                         } else if (xhr.status === 419) {
-                            errorMessage = "Sesi Anda telah berakhir. Silakan segarkan halaman ini dan coba lagi.";
+                            errorMessage = "Sesi Anda telah berakhir. Silakan segarkan halaman ini (F5) dan coba lagi.";
                         } else if (xhr.status === 500) {
                             if (xhr.responseJSON && xhr.responseJSON.message) {
                                 errorMessage = xhr.responseJSON.message;
@@ -159,10 +189,17 @@
                                 errorMessage = "Terjadi kesalahan internal pada server. Silakan coba lagi nanti atau hubungi admin.";
                             }
                         } else if (xhr.status === 0) {
-                            errorMessage = "Tidak dapat terhubung ke server. Periksa koneksi internet Anda.";
+                            errorMessage = "Tidak dapat terhubung ke server. Kemungkinan:\n";
+                            errorMessage += "1. CSRF token tidak valid (coba refresh halaman)\n";
+                            errorMessage += "2. Server tidak berjalan\n";
+                            errorMessage += "3. Masalah koneksi internet\n\n";
+                            errorMessage += "Silakan refresh halaman (F5) dan coba lagi.";
                         }
 
                         alert("❌ " + errorMessage);
+                    },
+                    complete: function() {
+                        console.log('Request complete');
                     }
                 });
             });
