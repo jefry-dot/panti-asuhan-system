@@ -4,7 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Donatur - Panti Asuhan')</title>
-    
+
+    @if(getFavicon())
+        <link rel="icon" type="image/x-icon" href="{{ getFavicon() }}">
+        <link rel="shortcut icon" type="image/x-icon" href="{{ getFavicon() }}">
+    @endif
+
     <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -28,9 +33,13 @@
     <div class="sidebar w-64 min-h-screen p-6 flex flex-col bg-white/80 backdrop-blur-lg shadow-md">
         <!-- Logo -->
         <div class="flex items-center mb-10">
-            <div class="w-12 h-12 logo-circle rounded-full flex items-center justify-center shadow-lg mr-3 bg-emerald-500">
-                <i class="fas fa-leaf text-white text-xl"></i>
-            </div>
+            @if(getLogo())
+                <img src="{{ getLogo() }}" alt="Logo" class="w-12 h-12 object-contain mr-3">
+            @else
+                <div class="w-12 h-12 logo-circle rounded-full flex items-center justify-center shadow-lg mr-3 bg-emerald-500">
+                    <i class="fas fa-leaf text-white text-xl"></i>
+                </div>
+            @endif
             <h1 class="text-xl font-bold text-emerald-800">Panti Asuhan</h1>
         </div>
 

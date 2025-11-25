@@ -7,6 +7,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title') - Yayasan Alza el Rahmah</title>
 
+    @if(getFavicon())
+        <link rel="icon" type="image/x-icon" href="{{ getFavicon() }}">
+        <link rel="shortcut icon" type="image/x-icon" href="{{ getFavicon() }}">
+    @endif
+
     {{-- CDN Bootstrap & FontAwesome --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -163,8 +168,13 @@
     {{-- 🌿 Navbar Publik --}}
     <nav class="navbar navbar-expand-lg navbar-light sticky-top">
         <div class="container">
-            <a class="navbar-brand" href="{{ route('public.home') }}">
-                <i class="fas fa-hands-helping me-2"></i>Yayasan Alza el Rohmah
+            <a class="navbar-brand d-flex align-items-center" href="{{ route('public.home') }}">
+                @if(getLogo())
+                    <img src="{{ getLogo() }}" alt="Logo" style="height: 40px; width: auto; object-fit: contain;" class="me-2">
+                @else
+                    <i class="fas fa-hands-helping me-2"></i>
+                @endif
+                <span>Yayasan Alza el Rohmah</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>

@@ -7,6 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title') - Admin Panti Asuhan</title>
 
+    @if(getFavicon())
+        <link rel="icon" type="image/x-icon" href="{{ getFavicon() }}">
+        <link rel="shortcut icon" type="image/x-icon" href="{{ getFavicon() }}">
+    @endif
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
@@ -305,10 +310,14 @@
             <a class="sidebar-brand d-flex align-items-center justify-content-center"
                 href="{{ route('admin.dashboard') }}">
                 <div class="sidebar-brand-icon">
-                    <div class="logo-circle rounded-circle d-flex align-items-center justify-content-center"
-                        style="width: 40px; height: 40px;">
-                        <i class="fas fa-hands-helping text-white"></i>
-                    </div>
+                    @if(getLogo())
+                        <img src="{{ getLogo() }}" alt="Logo" style="width: 40px; height: 40px; object-fit: contain;">
+                    @else
+                        <div class="logo-circle rounded-circle d-flex align-items-center justify-content-center"
+                            style="width: 40px; height: 40px;">
+                            <i class="fas fa-hands-helping text-white"></i>
+                        </div>
+                    @endif
                 </div>
                 <div class="sidebar-brand-text mx-3 text-dark">Admin Panti</div>
             </a>
@@ -343,6 +352,12 @@
                     @if($unreadCount > 0)
                         <span class="badge bg-danger ms-2">{{ $unreadCount }}</span>
                     @endif
+                </a>
+            </li>
+            <li class="nav-item {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
+                <a class="nav-link text-dark" href="{{ route('admin.settings.index') }}">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Pengaturan Sistem</span>
                 </a>
             </li>
 

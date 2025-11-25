@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\BeritaController as AdminBeritaController;
 use App\Http\Controllers\Admin\AcaraController as AdminAcaraController;
 use App\Http\Controllers\Admin\DonasiController as AdminDonasiController;
 use App\Http\Controllers\Admin\MessageController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
@@ -101,6 +102,11 @@ Route::middleware(['auth', 'role:admin', 'verified'])
         Route::get('/pesan', [MessageController::class, 'index'])->name('pesan.index');
         Route::get('/pesan/{message}', [MessageController::class, 'show'])->name('pesan.show');
         Route::delete('/pesan/{message}', [MessageController::class, 'destroy'])->name('pesan.destroy');
+
+        // Settings (Logo & Favicon)
+        Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+        Route::post('/settings/logo', [SettingController::class, 'updateLogo'])->name('settings.logo');
+        Route::post('/settings/favicon', [SettingController::class, 'updateFavicon'])->name('settings.favicon');
     });
 
 // ==================== ROUTE USER (DONATUR) ==================== //
