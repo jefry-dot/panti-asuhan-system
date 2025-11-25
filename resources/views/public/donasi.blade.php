@@ -111,6 +111,12 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function (response) {
+                        if (response.error) {
+                            alert("❌ " + response.message);
+                            console.error('Donation error:', response.message);
+                            return;
+                        }
+
                         if (response.snap_token) {
                             snap.pay(response.snap_token, {
                                 onSuccess: function (result) {
@@ -127,12 +133,15 @@
                                 }
                             });
                         } else {
-                            alert("Terjadi kesalahan. Token pembayaran tidak ditemukan.");
+                            alert("❌ Terjadi kesalahan. Token pembayaran tidak ditemukan.");
                         }
                     },
                     error: function (xhr) {
                         let errorMessage = "Terjadi kesalahan saat memproses donasi.";
-                        
+
+                        console.log('XHR Status:', xhr.status);
+                        console.log('XHR Response:', xhr.responseText);
+
                         if (xhr.status === 422) {
                             let errors = xhr.responseJSON.errors;
                             errorMessage = "Terdapat kesalahan validasi:\n";
@@ -142,16 +151,18 @@
                         } else if (xhr.status === 419) {
                             errorMessage = "Sesi Anda telah berakhir. Silakan segarkan halaman ini dan coba lagi.";
                         } else if (xhr.status === 500) {
-                            // Check if Midtrans config is likely the issue
-                            if(xhr.responseText.includes("Midtrans")) {
+                            if (xhr.responseJSON && xhr.responseJSON.message) {
+                                errorMessage = xhr.responseJSON.message;
+                            } else if (xhr.responseText.includes("Midtrans")) {
                                 errorMessage = "Terjadi kesalahan pada server. Kemungkinan konfigurasi pembayaran (Midtrans) belum lengkap. Silakan hubungi admin.";
                             } else {
-                                errorMessage = "Terjadi kesalahan internal pada server. Silakan coba lagi nanti.";
+                                errorMessage = "Terjadi kesalahan internal pada server. Silakan coba lagi nanti atau hubungi admin.";
                             }
+                        } else if (xhr.status === 0) {
+                            errorMessage = "Tidak dapat terhubung ke server. Periksa koneksi internet Anda.";
                         }
-                        
-                        console.error(xhr.responseText);
-                        alert(errorMessage);
+
+                        alert("❌ " + errorMessage);
                     }
                 });
             });
