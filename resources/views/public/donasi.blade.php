@@ -126,44 +126,53 @@
                     },
                     success: function (response) {
                         console.log('Response received:', response);
-                        submitBtn.prop('disabled', false).text(originalText);
 
                         if (response.error) {
-                            alert("❌ " + response.message);
+                            submitBtn.prop('disabled', false).text(originalText);
                             console.error('Donation error:', response.message);
+
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Gagal Memproses Donasi',
+                                text: 'Terjadi kesalahan saat memproses donasi Anda. Silakan coba lagi atau hubungi admin.',
+                                confirmButtonColor: '#16a34a',
+                                confirmButtonText: 'Tutup'
+                            });
                             return;
                         }
 
-                        if (response.snap_token) {
-                            console.log('Snap token received, opening payment window');
-                            snap.pay(response.snap_token, {
-                                onSuccess: function (result) {
-                                    console.log('Payment success:', result);
-                                    window.location.href = "{{ route('public.donasi.finish') }}?status=success&order_id=" + result.order_id;
-                                },
-                                onPending: function (result) {
-                                    console.log('Payment pending:', result);
-                                    window.location.href = "{{ route('public.donasi.finish') }}?status=pending&order_id=" + result.order_id;
-                                },
-                                onError: function (result) {
-                                    console.log('Payment error:', result);
-                                    window.location.href = "{{ route('public.donasi.finish') }}?status=failed&order_id=" + result.order_id;
-                                },
-                                onClose: function () {
-                                    console.log('Payment popup closed');
-                                    alert("⚠️ Anda menutup popup tanpa menyelesaikan pembayaran.");
-                                    submitBtn.prop('disabled', false).text(originalText);
-                                }
+                        if (response.snap_token && response.donation_id) {
+                            console.log('Snap token received, redirecting to payment page');
+
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Donasi Berhasil Dibuat!',
+                                text: 'Anda akan diarahkan ke halaman pembayaran...',
+                                timer: 1500,
+                                showConfirmButton: false,
+                                allowOutsideClick: false
+                            }).then(() => {
+                                // Redirect ke halaman payment khusus
+                                window.location.href = "{{ url('/donasi/payment') }}/" + response.donation_id;
                             });
                         } else {
-                            alert("❌ Terjadi kesalahan. Token pembayaran tidak ditemukan.");
-                            console.error('No snap_token in response');
+                            submitBtn.prop('disabled', false).text(originalText);
+                            console.error('Missing snap_token or donation_id in response');
+
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Terjadi Kesalahan',
+                                text: 'Data pembayaran tidak lengkap. Silakan coba lagi.',
+                                confirmButtonColor: '#16a34a',
+                                confirmButtonText: 'Tutup'
+                            });
                         }
                     },
                     error: function (xhr, status, error) {
                         submitBtn.prop('disabled', false).text(originalText);
 
-                        let errorMessage = "Terjadi kesalahan saat memproses donasi.";
+                        let errorTitle = "Gagal Memproses Donasi";
+                        let errorMessage = "Terjadi kesalahan saat memproses donasi Anda. Silakan coba lagi atau hubungi admin.";
 
                         console.error('AJAX Error:');
                         console.error('XHR Status:', xhr.status);
@@ -173,30 +182,37 @@
                         console.error('XHR Object:', xhr);
 
                         if (xhr.status === 422) {
-                            let errors = xhr.responseJSON.errors;
-                            errorMessage = "Terdapat kesalahan validasi:\n";
-                            $.each(errors, function (key, value) {
-                                errorMessage += "- " + value[0] + "\n";
-                            });
-                        } else if (xhr.status === 419) {
-                            errorMessage = "Sesi Anda telah berakhir. Silakan segarkan halaman ini (F5) dan coba lagi.";
-                        } else if (xhr.status === 500) {
-                            if (xhr.responseJSON && xhr.responseJSON.message) {
-                                errorMessage = xhr.responseJSON.message;
-                            } else if (xhr.responseText.includes("Midtrans")) {
-                                errorMessage = "Terjadi kesalahan pada server. Kemungkinan konfigurasi pembayaran (Midtrans) belum lengkap. Silakan hubungi admin.";
-                            } else {
-                                errorMessage = "Terjadi kesalahan internal pada server. Silakan coba lagi nanti atau hubungi admin.";
+                            errorTitle = "Data Tidak Valid";
+                            errorMessage = "Mohon periksa kembali data yang Anda masukkan.";
+
+                            // Show specific validation errors if available
+                            if (xhr.responseJSON && xhr.responseJSON.errors) {
+                                let errors = xhr.responseJSON.errors;
+                                let errorList = "<ul style='text-align: left; margin: 10px 0;'>";
+                                $.each(errors, function (key, value) {
+                                    errorList += "<li>" + value[0] + "</li>";
+                                });
+                                errorList += "</ul>";
+                                errorMessage = errorList;
                             }
+                        } else if (xhr.status === 419) {
+                            errorTitle = "Sesi Berakhir";
+                            errorMessage = "Sesi Anda telah berakhir. Silakan refresh halaman (F5) dan coba lagi.";
+                        } else if (xhr.status === 500) {
+                            errorTitle = "Kesalahan Server";
+                            errorMessage = "Terjadi kesalahan pada server. Silakan coba lagi atau hubungi admin jika masalah berlanjut.";
                         } else if (xhr.status === 0) {
-                            errorMessage = "Tidak dapat terhubung ke server. Kemungkinan:\n";
-                            errorMessage += "1. CSRF token tidak valid (coba refresh halaman)\n";
-                            errorMessage += "2. Server tidak berjalan\n";
-                            errorMessage += "3. Masalah koneksi internet\n\n";
-                            errorMessage += "Silakan refresh halaman (F5) dan coba lagi.";
+                            errorTitle = "Tidak Dapat Terhubung";
+                            errorMessage = "Tidak dapat terhubung ke server. Silakan periksa koneksi internet Anda, refresh halaman (F5), dan coba lagi.";
                         }
 
-                        alert("❌ " + errorMessage);
+                        Swal.fire({
+                            icon: 'error',
+                            title: errorTitle,
+                            html: errorMessage,
+                            confirmButtonColor: '#16a34a',
+                            confirmButtonText: 'Tutup'
+                        });
                     },
                     complete: function() {
                         console.log('Request complete');

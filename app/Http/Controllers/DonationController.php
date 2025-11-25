@@ -79,7 +79,8 @@ class DonationController extends Controller
 
             return response()->json([
                 'snap_token' => $snapToken,
-                'client_key' => $clientKey
+                'client_key' => $clientKey,
+                'donation_id' => $donation->id
             ]);
 
         } catch (\Exception $e) {
@@ -161,6 +162,39 @@ class DonationController extends Controller
         }
     }
 
+    // Halaman payment dengan snap token
+    public function payment($id)
+    {
+        try {
+            $donation = Donation::findOrFail($id);
+
+            // Validasi: hanya donation dengan status pending yang bisa dibayar
+            if ($donation->status !== 'pending') {
+                return redirect()->route('public.donasi')
+                    ->with('error', 'Donasi ini sudah ' . $donation->status);
+            }
+
+            // Validasi: harus ada snap_token
+            if (empty($donation->snap_token)) {
+                return redirect()->route('public.donasi')
+                    ->with('error', 'Token pembayaran tidak ditemukan. Silakan donasi ulang.');
+            }
+
+            $clientKey = config('services.midtrans.clientKey');
+
+            return view('public.payment', compact('donation', 'clientKey'));
+
+        } catch (\Exception $e) {
+            Log::error('Payment page error', [
+                'donation_id' => $id,
+                'error' => $e->getMessage()
+            ]);
+
+            return redirect()->route('public.donasi')
+                ->with('error', 'Donasi tidak ditemukan.');
+        }
+    }
+
     // Halaman finish setelah pembayaran
     public function finish(Request $request)
     {
@@ -169,7 +203,11 @@ class DonationController extends Controller
 
         $donation = null;
         if ($orderId) {
-            $donation = Donation::find($orderId);
+            // Extract donation ID from order_id format: ORDER-{id}-{timestamp}
+            preg_match('/ORDER-(\d+)-\d+/', $orderId, $matches);
+            if (isset($matches[1])) {
+                $donation = Donation::find($matches[1]);
+            }
         }
 
         return view('public.donasi-finish', compact('status', 'donation'));

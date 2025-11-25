@@ -45,6 +45,7 @@ Route::prefix('/')
         Route::controller(DonationController::class)->group(function () {
             Route::get('/donasi', 'index')->name('donasi');
             Route::post('/donasi', 'store')->name('donasi.store');
+            Route::get('/donasi/payment/{id}', 'payment')->name('donasi.payment');
             Route::get('/donasi/finish', 'finish')->name('donasi.finish');
         });
     });
