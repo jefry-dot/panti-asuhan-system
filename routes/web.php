@@ -142,16 +142,5 @@ Route::middleware('guest')->group(function () {
 // ==================== ROUTE AUTHENTICATION (LOGIN/REGISTER) ==================== //
 require __DIR__ . '/auth.php';
 
-Route::get('/email/verify', function () {
-    return view('auth.verify-email');
-})->middleware('auth')->name('verification.notice');
-
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill();
-    return redirect('/user/dashboard');
-})->middleware(['auth', 'signed'])->name('verification.verify');
-
-Route::post('/email/verification-notification', function (Request $request) {
-    $request->user()->sendEmailVerificationNotification();
-    return back()->with('status', 'verification-link-sent');
-})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+// Email verification routes sudah ada di auth.php (Laravel Breeze)
+// Jangan duplicate route names!
