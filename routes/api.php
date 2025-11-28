@@ -59,14 +59,14 @@ Route::middleware('auth:sanctum')->group(function () {
         // Berita management (Admin)
         Route::prefix('berita')->group(function () {
             Route::post('/', [BeritaController::class, 'store']);
-            Route::put('/{id}', [BeritaController::class, 'update']);
+            Route::post('/{id}', [BeritaController::class, 'update']); // POST with _method=PUT
             Route::delete('/{id}', [BeritaController::class, 'destroy']);
         });
 
         // Acara management (Admin)
         Route::prefix('acara')->group(function () {
             Route::post('/', [AcaraController::class, 'store']);
-            Route::put('/{id}', [AcaraController::class, 'update']);
+            Route::post('/{id}', [AcaraController::class, 'update']); // POST with _method=PUT
             Route::delete('/{id}', [AcaraController::class, 'destroy']);
         });
 
